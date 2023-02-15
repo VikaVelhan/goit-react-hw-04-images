@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import css from './Modal.module.css';
 
 const modalRef = document.querySelector('#modal-root');
+
 class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.onCloseByEsc);
