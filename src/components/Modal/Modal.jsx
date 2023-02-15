@@ -1,14 +1,44 @@
-import { Component } from 'react';
+//import { Component } from 'react';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import css from './Modal.module.css';
 
 const modalRef = document.querySelector('#modal-root');
-class Modal extends Component {
+
+export default function Modal({ largeImg, onClose }) {
+  useState(() => {
+    const onCloseByEsc = e => {
+      if (e.code === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', onCloseByEsc);
+    return () => {
+      window.removeEventListener('keydown', onCloseByEsc);
+    };
+  }, [onClose]);
+
+  const onCloseBackdropClick = e => {
+    if (e.currentTarget === e.target) {
+      onClose();
+    }
+  };
+
+  return createPortal(
+    <div className={css.Overlay} onClick={onCloseBackdropClick}>
+      <div className={css.Modal}>
+        <img src={largeImg} alt="" />
+      </div>
+    </div>,
+    modalRef
+  );
+}
+/*class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.onCloseByEsc);
   }
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.onCloseByEsc);
+    
   }
   onCloseByEsc = e => {
     if (e.code === 'Escape') {
@@ -34,4 +64,4 @@ class Modal extends Component {
     );
   }
 }
-export default Modal;
+export default Modal;*/
