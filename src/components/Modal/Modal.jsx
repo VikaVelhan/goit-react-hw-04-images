@@ -33,35 +33,3 @@ export default function Modal({ largeImg, onClose }) {
     modalRef
   );
 }
-/*class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.onCloseByEsc);
-  }
-  componentWillUnmount() {
-    
-  }
-  onCloseByEsc = e => {
-    if (e.code === 'Escape') {
-      this.props.onClose();
-    }
-  };
-
-  onCloseBackdropClick = e => {
-    if (e.currentTarget === e.target) {
-      this.props.onClose();
-    }
-  };
-
-  render() {
-    const { largeImg } = this.props;
-    return createPortal(
-      <div className={css.Overlay} onClick={this.onCloseBackdropClick}>
-        <div className={css.Modal}>
-          <img src={largeImg} alt="" />
-        </div>
-      </div>,
-      modalRef
-    );
-  }
-}
-export default Modal;*/

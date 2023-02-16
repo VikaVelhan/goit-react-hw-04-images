@@ -1,29 +1,27 @@
-import { React, Component } from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import Button from './Button/Button';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Notiflix from 'notiflix';
 import { fetchImages } from '..//service/fetchImages';
+import { useEffect, useState } from 'react';
 
-export class App extends Component {
-  state = {
-    query: '',
-    images: [],
-    page: 1,
-    isLoading: false,
-    totalImages: 0,
-  };
+export function App() {
+  const [query, setQuery] = useState('');
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalImages, setTotalImages] = useState(0);
 
-  componentDidUpdate(_, prevState) {
-    const { query, page } = this.state;
-    if (prevState.query !== query || prevState.page !== page) {
+  useEffect(() => {
+    //const { query, page } = this.state;
+    if (query !== '') {
       fetchImages(query, page)
         .then(resp => {
-          this.setState(({ images }) => ({
-            images: page === 1 ? [...resp.hits] : [...images, ...resp.hits],
-            totalImages: resp.totalHits,
-          }));
+          setImages(images =>
+            page === 1 ? [...resp.hits] : [...images, ...resp.hits]
+          );
+          setTotalImages(resp.totalHits);
         })
         .catch(error => {
           console.log(error);
@@ -32,40 +30,41 @@ export class App extends Component {
           );
         })
         .finally(() => {
-          this.setState({ isLoading: false });
+          setIsLoading(false);
         });
     }
-  }
+  }, [query, page]);
 
-  handleSubmit = query => {
-    this.setState({ query, page: 1, images: [] });
-    if (this.state.query !== '') {
-      this.setState({ isLoading: true });
+  const handleSubmit = query => {
+    setQuery(query);
+    setPage(1);
+    setImages([]);
+    //setState({ query, page: 1, images: [] });
+    if (query !== '') {
+      setIsLoading(true);
     }
   };
 
-  handleLoadMore = () => {
-    this.setState(({ page }) => ({ page: page + 1, isLoading: true }));
+  const handleLoadMore = () => {
+    setPage(page + 1);
+    setIsLoading(true);
   };
 
-  renderButtonOrLoader = () => {
-    return this.state.isLoading ? (
+  const renderButtonOrLoader = () => {
+    return isLoading ? (
       <Loader />
     ) : (
-      this.state.images.length !== 0 &&
-        this.state.images.length < this.state.totalImages && (
-          <Button onClick={this.handleLoadMore} />
-        )
+      images.length !== 0 && images.length < totalImages && (
+        <Button onClick={handleLoadMore} />
+      )
     );
   };
 
-  render() {
-    return (
-      <div>
-        <SearchBar onSubmit={this.handleSubmit} />
-        <ImageGallery images={this.state.images} />
-        {this.renderButtonOrLoader()}
-      </div>
-    );
-  }
+  return (
+    <div>
+      <SearchBar onSubmit={handleSubmit} />
+      <ImageGallery images={images} />
+      {renderButtonOrLoader()}
+    </div>
+  );
 }

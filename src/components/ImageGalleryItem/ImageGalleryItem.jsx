@@ -31,34 +31,3 @@ export default function ImageGalleryItem({ image }) {
 ImageGalleryItem.propTypes = {
   image: PropTypes.object,
 };
-
-/*class oldImageGalleryItem extends Component {
-  state = {
-    isModalOpen: false,
-  };
-  handleToggleModal = () => {
-    this.setState(({ isModalOpen }) => ({ isModalOpen: !isModalOpen }));
-  };
-  render() {
-    const { webformatURL, largeImageURL } = this.props.image;
-    const { isModalOpen } = this.state;
-    return (
-      <>
-        <li onClick={this.handleToggleModal} className={css.ImageGalleryItem}>
-          <img
-            src={webformatURL}
-            alt="img"
-            className={css.ImageGalleryItemImage}
-          />
-        </li>
-        {isModalOpen && (
-          <Modal onClose={this.handleToggleModal} largeImg={largeImageURL} />
-        )}
-      </>
-    );
-  }
-}
-ImageGalleryItem.propTypes = {
-  image: PropTypes.object,
-};
-export default ImageGalleryItem;*/
