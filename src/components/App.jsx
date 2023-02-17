@@ -15,24 +15,25 @@ export function App() {
 
   useEffect(() => {
     //const { query, page } = this.state;
-    if (query !== '') {
-      fetchImages(query, page)
-        .then(resp => {
-          setImages(images =>
-            page === 1 ? [...resp.hits] : [...images, ...resp.hits]
-          );
-          setTotalImages(resp.totalHits);
-        })
-        .catch(error => {
-          console.log(error);
-          return Notiflix.Notify.failure(
-            'Sorry, there are no images matching your search query. Please try again.'
-          );
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+    if (!query) {
+      return;
     }
+    fetchImages(query, page)
+      .then(resp => {
+        setImages(images =>
+          page === 1 ? [...resp.hits] : [...images, ...resp.hits]
+        );
+        setTotalImages(resp.totalHits);
+      })
+      .catch(error => {
+        console.log(error);
+        return Notiflix.Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [query, page]);
 
   const handleSubmit = query => {
