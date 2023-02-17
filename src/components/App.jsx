@@ -14,7 +14,6 @@ export function App() {
   const [totalImages, setTotalImages] = useState(0);
 
   useEffect(() => {
-    //const { query, page } = this.state;
     if (!query) {
       return;
     }
@@ -40,7 +39,7 @@ export function App() {
     setQuery(query);
     setPage(1);
     setImages([]);
-    //setState({ query, page: 1, images: [] });
+
     if (query !== '') {
       setIsLoading(true);
     }
